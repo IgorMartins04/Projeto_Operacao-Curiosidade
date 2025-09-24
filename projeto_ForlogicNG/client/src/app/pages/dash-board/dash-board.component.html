@@ -1,0 +1,67 @@
+<body>
+    <aside>
+        <app-aside></app-aside>
+    </aside>
+    
+    <div class="content">
+        <header>
+            <app-header [user]="user" (search)="searchRegisters($event)"></app-header>
+        </header>
+    
+        <main>
+            <div class="data-boards">
+                <app-card 
+                    [idCard]="'card-total-registers'" 
+                    [classCard]="'total-registers'" 
+                    [idData]="'total-registers'" 
+                    [textCard]="'Total de cadastros'" 
+                    class="cards" 
+                    [numberCard]="totalRegisters"
+                    [ngClass]="{'selected': selectedCard === 'total-registers'}"
+                    (click)="filterByCard('total-registers')">
+                </app-card>
+                <app-card 
+                    [idCard]="'card-last-registers'" 
+                    [classCard]="'last-registers'" 
+                    [idData]="'last-registers'" 
+                    [textCard]="'Cadastros do último mês'"
+                    class="cards" 
+                    [numberCard]="lastMonthRegisters"
+                    [ngClass]="{'selected': selectedCard === 'last-registers'}"
+                    (click)="filterByCard('last-registers')">
+                </app-card>
+                <app-card 
+                    [idCard]="'card-pendencies'" 
+                    [classCard]="'pendencies'" 
+                    [idData]="'pendencies'" 
+                    [textCard]="'Pendentes de revisão'" 
+                    class="cards" 
+                    [numberCard]="pendencies"
+                    [ngClass]="{'selected': selectedCard === 'pendencies'}"
+                    (click)="filterByCard('pendencies')">
+                </app-card>
+            </div>
+
+            <div class="user-table">
+                <app-main 
+                    [titleTable]="'Cadastros'"
+                    [idTable]="'table-registers'"
+                    [columns]="[
+                        { key: 'name', label: 'Nome' },
+                        { key: 'email', label: 'Email' },
+                        { key: 'status', label: 'Status' }
+                    ]"
+                    [registers]="filteredRegisters"
+                    (rowClick)="openRegisterPopup($event)">
+                </app-main>
+            </div>
+        </main>
+
+        <app-popup-datails 
+            *ngIf="showPopup" 
+            [register]="selectedRegister" 
+            (close)="closePopup()">
+        </app-popup-datails>
+        <app-footer></app-footer>
+    </div>
+</body>

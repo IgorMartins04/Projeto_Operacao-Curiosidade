@@ -1,0 +1,33 @@
+<div class="container-login">
+  <div *ngIf="notificationMessage" class="logged-in">
+    {{ notificationMessage }}
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="login()" class="box">
+    <h1>OPERAÇÃO CURIOSIDADE</h1>
+
+    <div class="inputs">
+      <input type="email" id="email" placeholder="Email" formControlName="email" 
+        (input)="hideError('email')">
+      <small *ngIf="submitted && email.invalid && !hideEmailError" class="error-message">
+        <span *ngIf="email.errors?.['required'] || email.errors?.['email']">
+          Por favor, insira um email válido.
+        </span>
+      </small>
+
+      <input type="password" id="password" placeholder="Senha" formControlName="password" 
+        (input)="hideError('password')">
+      <small *ngIf="submitted && password.invalid && !hidePasswordError" class="error-message">
+        <span *ngIf="password.errors?.['required'] || password.errors?.['minlength']">
+          Senha inválida! Mínimo 8 caracteres.
+        </span>
+      </small>
+      <small *ngIf="apiError">{{ apiError }}</small>
+    </div>
+
+    <div class="bottom-form">
+      <app-button-form [textBt]="'Entrar'" type="submit" id="button-login" class="button"></app-button-form>
+      <p>Não possui cadastro? <a routerLink="/create-user">Cadastre-se agora</a></p>
+    </div>
+  </form>
+</div>

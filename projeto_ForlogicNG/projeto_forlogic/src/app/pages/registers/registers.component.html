@@ -1,0 +1,325 @@
+<body>
+  <aside>
+    <app-aside></app-aside>
+  </aside>
+
+  <div class="content">
+    <header>
+      <app-header [user]="user" (search)="searchRegisters($event)"></app-header>
+    </header>
+
+    <main>
+      <section class="section-main">
+        <div *ngIf="showCreateSuccess" id="createRegister" class="success">
+          <p>Cadastro criado com sucesso!</p>
+        </div>
+        <div  *ngIf="showEditSuccess" id="editedRegister" class="success">
+          <p>Editado com sucesso!</p>
+        </div>
+        <div *ngIf="showDeleteSuccess" id="deletedRegister" class="success-deleted">
+          <p>Deletado com sucesso!</p>
+        </div>
+
+        <div class="aling-top">
+          <div class="title">
+            <h2>Usuários cadastrados</h2>
+          </div>
+          <app-button-form
+            [textBt]="'Novo cadastro'"
+            type="button"
+            [id]="'new-register'"
+            (click)="openCreatePopup()">
+          </app-button-form>
+        </div>
+
+        <app-main
+          [titleTable]="''"
+          [idTable]="'table-modifications'"
+          [columns]="[
+            { key: 'name', label: 'Nome' },
+            { key: 'email', label: 'Email' },
+            { key: 'status', label: 'Status' },
+            { key: 'actions', label: 'Modificações' }
+          ]"
+          [registers]="paginatedRegisters"
+          (rowClick)="openRegisterPopup($event)"
+          (edit)="openEditPopup($event)"
+          (delete)="openDeletePopup($event.id)">  
+        </app-main>
+
+        <div id="pagination" class="pagination">
+          <button id="previous" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&laquo;</button>
+          <span id="number-page">{{currentPage}} / {{totalPages}}</span>
+          <button id="next" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&raquo;</button>
+        </div>
+
+      </section>
+    </main>
+
+    <div id="popup-create" class="popup-create" [ngClass]="{ 'hidden': !showCreatePopup }">
+      <div class="popup-content">
+        <form id="create-register" [formGroup]="formCreate" (ngSubmit)="createRegister()">
+          <div class="top">
+            <h2>Novo cadastro</h2>
+            <div class="status">
+              <app-form-input-field
+                [type]="'checkbox'"
+                [placeholder]="''"
+                [id]="'status'"
+                formControlName="status">
+              </app-form-input-field>
+              <label for="status">Ativo</label>
+            </div>
+          </div>
+
+          <h3>1º Fatos e Dados</h3>
+          <div class="group-field">
+            <label for="name">Nome *</label>
+            <app-form-input-field
+              [type]="'text'"
+              [placeholder]="''"
+              [id]="'name'"
+              formControlName="name">
+            </app-form-input-field>
+            <small class="invalid"
+              *ngIf="formCreate.get('name')?.invalid && (formCreate.get('name')?.touched || formCreate.get('name')?.dirty)">
+              {{ getErrorMessage('name') }}
+            </small>
+
+          </div>
+
+          <div class="group-line">
+            <div class="group-field">
+              <label for="age">Idade *</label>
+              <app-form-input-field
+                [type]="'number'"
+                [placeholder]="''"
+                [id]="'age'"
+                formControlName="age">
+              </app-form-input-field>
+              <small class="invalid"
+                *ngIf="formCreate.get('age')?.invalid && (formCreate.get('age')?.touched || formCreate.get('age')?.dirty)">
+                {{ getErrorMessage('age') }}
+              </small>
+            </div>
+
+            <div class="group-field">
+              <label for="email">E-mail *</label>
+              <app-form-input-field
+                [type]="'text'"
+                [placeholder]="''"
+                [id]="'email'"
+                formControlName="email">
+              </app-form-input-field>
+              <small class="invalid"
+                *ngIf="formCreate.get('email')?.invalid && (formCreate.get('email')?.touched || formCreate.get('email')?.dirty)">
+                {{ getErrorMessage('email') }}
+              </small>
+            </div>
+          </div>
+
+          <div class="group-field">
+            <label for="address">Endereço *</label>
+            <app-form-input-field
+              [type]="'text'"
+              [placeholder]="''"
+              [id]="'address'"
+              formControlName="address">
+            </app-form-input-field>
+            <small class="invalid"
+              *ngIf="formCreate.get('address')?.invalid && (formCreate.get('address')?.touched || formCreate.get('address')?.dirty)">
+              {{ getErrorMessage('address') }}
+            </small>
+          </div>
+
+          <div class="group-field">
+            <label for="infos">Outras informações</label>
+            <textarea
+              class="texts-long"
+              id="infos"
+              rows="3"
+              formControlName="info">
+            </textarea>
+          </div>
+
+          <h3>2º Interesses</h3>
+          <textarea
+            class="texts-long"
+            id="interests"
+            rows="3"
+            formControlName="interests">
+          </textarea>
+
+          <h3>3º Sentimentos</h3>
+          <textarea
+            class="texts-long"
+            id="feelings"
+            rows="3"
+            formControlName="feelings">
+          </textarea>
+
+          <h3>4º Valores</h3>
+          <textarea
+            class="texts-long"
+            id="mValues"
+            rows="3"
+            formControlName="mValues">
+          </textarea>
+
+          <div class="popup-buttons">
+            <app-button-form
+              [textBt]="'Cancelar'"
+              type="button"
+              id="cancel"
+              class="cancel"
+              (click)="closeCreatePopup()">
+            </app-button-form>
+            <app-button-form
+              [textBt]="'Salvar'"
+              type="submit"
+              class="save"
+              id="save">
+            </app-button-form>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="popup-edit" class="popup-confirm" [ngClass]="{'hidden': !showEditPopup}">
+      <div class="popup-content">
+        <h3>Editar Usuário</h3>
+        <form id="form-edit" [formGroup]="formEdit" (ngSubmit)="onSaveEdit()">
+          <small class="invalid" id="erroGeneral" style="display: none;"></small>
+
+          <app-form-input-field
+            [type]="'hidden'"
+            [id]="'edit-id'"
+            formControlName="edit-id">
+          </app-form-input-field>
+
+          <div class="top-edit">
+            <app-form-input-field
+              [type]="'checkbox'"
+              [id]="'edit-status'"
+              formControlName="edit-status">
+            </app-form-input-field>
+            <label for="edit-status">Ativo</label>
+          </div>
+
+          <div class="group-line">
+            <div class="group-field">
+              <label for="edit-name">Nome *</label>
+              <app-form-input-field
+                [type]="'text'"
+                [id]="'edit-name'"
+                formControlName="edit-name">
+              </app-form-input-field>
+              <small class="invalid" id="erroName"></small>
+            </div>
+
+            <div class="group-field">
+              <label for="edit-age">Idade *</label>
+              <app-form-input-field
+                [type]="'number'"
+                [id]="'edit-age'"
+                formControlName="edit-age">
+              </app-form-input-field>
+              <small class="invalid" id="erroAge"></small>
+            </div>
+          </div>
+
+          <div class="group-field">
+            <label for="edit-email">Email *</label>
+            <app-form-input-field
+              [type]="'email'"
+              [id]="'edit-email'"
+              formControlName="edit-email">
+            </app-form-input-field>
+            <small class="invalid" id="erroEmail"></small>
+          </div>
+
+          <div class="group-field">
+            <label for="edit-address">Endereço *</label>
+            <app-form-input-field
+              [type]="'text'"
+              [id]="'edit-address'"
+              formControlName="edit-address">
+            </app-form-input-field>
+            <small class="invalid" id="erroAddress"></small>
+          </div>
+
+          <div class="group-line">
+            <div class="group-field">
+              <label for="edit-infos">Outras Informações:</label>
+              <textarea id="edit-infos" rows="3" class="texts-long" formControlName="edit-infos"></textarea>
+            </div>
+
+            <div class="group-field">
+              <label for="edit-interests">Interesses:</label>
+              <textarea id="edit-interests" rows="3" class="texts-long" formControlName="edit-interests"></textarea>
+            </div>
+          </div>
+
+          <div class="group-line">
+            <div class="group-field">
+              <label for="edit-feelings">Sentimentos:</label>
+              <textarea id="edit-feelings" rows="3" class="texts-long" formControlName="edit-feelings"></textarea>
+            </div>
+
+            <div class="group-field">
+              <label for="edit-mvalues">Valores:</label>
+              <textarea id="edit-mvalues" rows="3" class="texts-long" formControlName="edit-mValues"></textarea>
+            </div>
+          </div>
+
+          <div class="popup-buttons">
+            <app-button-form
+              [textBt]="'Cancelar'"
+              type="button"
+              id="cancel-edit"
+              class="cancel"
+              (click)="closeEditPopup()">
+            </app-button-form>
+
+            <app-button-form
+              [textBt]="'Salvar'"
+              type="submit"
+              class="save"
+              id="save-edit">
+            </app-button-form>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <app-popup-datails
+      *ngIf="showPopup"
+      [register]="selectedRegister"
+      (close)="closePopup()">
+    </app-popup-datails>
+
+    <app-footer></app-footer>
+
+    <div id="popup-confirm" class="popup-confirm" [ngClass]="{ 'hidden': !showDeletePopup }">
+      <div class="popup-content">
+        <p>Tem certeza que deseja excluir este cadastro?</p>
+        <div class="popup-buttons">
+          <app-button-form
+            class="delete-btn"
+            type="button"
+            [textBt]="'Cancelar'"
+            id="cancel-delete"
+            (click)="closeDeletePopup()">
+          </app-button-form>
+          <app-button-form (click)="deleteRegister()"
+            class="confirm-delete-btn"
+            type="button"
+            [textBt]="'Sim, excluir'"
+            id="confirm-delete">
+          </app-button-form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

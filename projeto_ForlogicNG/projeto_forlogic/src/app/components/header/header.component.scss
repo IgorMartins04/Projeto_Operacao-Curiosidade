@@ -1,0 +1,66 @@
+header {
+  border-bottom: 20px solid var(--border);
+  background-color: var(--header);
+  width: 100%;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  margin: 0;
+  height: 6em;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--user-avatar);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3em;
+  color: var(--icon-avatar);
+}
+
+p {
+  color: var(--black);
+}
+
+span {
+  color: var(--black);
+}
+
+::ng-deep header .button {
+  background-color: var(--logout) !important;
+  padding: 10px !important;
+  color: var(--white) !important;
+  border-radius: 4px !important;
+  border: none !important;
+  color: white !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin: 0 !important;
+  width: 100% !important;
+  
+}
+
+::ng-deep header input {
+  background-color: var(--search) !important;
+  width: 210% !important;
+  color: var(--black) !important;
+  padding: 1em !important;
+  border-radius: 5px !important;
+  border: 1px solid rgba(0, 0, 0, 0.671) !important;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+  justify-content: center;
+  align-items: center;
+}
+

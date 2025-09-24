@@ -1,0 +1,18 @@
+input {
+  width: 80%;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid rgba(0,0,0,0.3);
+  outline: none;
+  transition: border 0.2s;
+}
+
+input:focus {
+  border-color: rgb(22, 169, 214);
+}
+
+small {
+  display: none;
+  color: red;
+  font-size: 14px;
+}

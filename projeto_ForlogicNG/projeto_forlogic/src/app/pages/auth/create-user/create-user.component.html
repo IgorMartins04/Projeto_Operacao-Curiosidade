@@ -1,0 +1,27 @@
+<div class="container-create">
+    <div id="createdSuccess" *ngIf="notificationMessage" class="created">
+        {{ notificationMessage }}
+    </div>
+
+    <form [formGroup]="form" class="box" id="formRegister" (ngSubmit)="onSubmit()">
+        <h1 class="subtitle">NOVO CADASTRO</h1>
+        <div class="inputs">
+            <app-form-input-field [type]="'text'" [placeholder]="'Nome'" [id]="'name'" class="input-create" formControlName="name"></app-form-input-field>
+           <small *ngIf="submitted && form.get('name')?.invalid && !hideNameError">
+                <span>Por favor insira um nome válido!</span>
+            </small>
+            <app-form-input-field [type]="'text'" [placeholder]="'Email'" [id]="'email'" class="input-create" formControlName="email"></app-form-input-field>
+            <small *ngIf="submitted && form.get('email')?.invalid && !hideEmailError" id="errorMessageEmail">
+                <span>Insira um email válido!</span>
+            </small>
+            <app-form-input-field [type]="'password'" [placeholder]="'Senha'" [id]="'password'" class="input-create" formControlName="password"></app-form-input-field>
+            <small *ngIf="submitted && form.get('password')?.invalid && !hidePasswordError" id="errorMessagePassword">
+                <span>Senha inválida! Mínimo 8 caracteres.</span>
+            </small>
+        </div>
+        <div class="buttons">
+            <app-button-form [textBt]="'Voltar'" type="submit" class="button" (click)="backPage()" [id]="'button'"></app-button-form>
+            <app-button-form [textBt]="'Cadastrar'" type="submit"  class="button" [id]="'button-create'"></app-button-form>
+        </div>
+    </form>
+</div>

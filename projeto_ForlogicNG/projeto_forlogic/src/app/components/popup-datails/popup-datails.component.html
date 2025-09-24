@@ -1,0 +1,19 @@
+<div id="popup-view" class="popup-confirm hidden">
+    <div class="popup-content">
+        <h3 class="dark">Detalhes do Cadastro</h3>
+        <div id="data-view" style="text-align: left;">
+            <p><strong>Status:</strong> {{register.status}}</p>
+            <p><strong>Nome:</strong> {{register.name}}</p>
+            <p><strong>Idade:</strong> {{register.age}}</p>
+            <p><strong>Email:</strong> {{register.email}}</p>
+            <p><strong>Endereço:</strong> {{register.address}}</p>
+            <p><strong>Outras Informações:</strong> {{register.info || '—'}}</p>
+            <p><strong>Interesses:</strong> {{register.interests || '—'}}</p>
+            <p><strong>Sentimentos:</strong> {{register.feelings || '—'}}</p>
+            <p><strong>Valores:</strong> {{register.mValues || '—'}}</p>
+        </div>
+        <div class="popup-buttons" style="margin-top: 20px;">
+            <button id="close-view" (click)="closePopup()">Fechar</button>
+        </div>
+    </div>
+</div>

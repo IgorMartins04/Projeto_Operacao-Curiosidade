@@ -1,0 +1,38 @@
+<body>
+    <aside>
+        <app-aside></app-aside>
+    </aside>
+
+    <div class="content">
+        <header>
+            <app-header [user]="user" (search)="searchLogs($event)"></app-header>
+        </header>
+
+        <main>
+            <section class="section-main">
+                <div class="aling-top">
+                    <h2 class="title">Registro de ações</h2>
+                </div>
+                <app-main [titleTable]="'Logs de Ação'"
+                    [idTable]="'table-logs'"
+                    [columns]="[
+                        { key: 'email', label: 'Email' },
+                        { key: 'userName', label: 'Usuário' },
+                        { key: 'action', label: 'Ação' },
+                        { key: 'dateRegister', label: 'Data da Ação' }
+                    ]"
+                    [registers]="paginatedLogs"
+                    (rowClick)="''">
+                </app-main>
+
+                <div id="pagination" class="pagination">
+                    <button id="previous" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&laquo;</button>
+                    <span id="number-page">{{currentPage}} / {{totalPages}}</span>
+                    <button id="next" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&raquo;</button>
+                </div>
+            </section>
+        </main>
+
+        <app-footer></app-footer>
+    </div>
+</body>
